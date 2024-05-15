@@ -9,9 +9,17 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+```{r carga_libreria}
+library(stringr)
+library(readr)
+```
+
 # **Pràctica 1**
 
-## Pregunta 1:
+## Data Science
+
+### Pregunta 1:
 
 De las siguientes preguntas, clasifica cada una como descriptiva, exploratoria, inferencia, predictiva o causal, y razona brevemente (una frase) el porqué:
 
@@ -31,7 +39,7 @@ R: causales.- Es asì, ya que lo solicitado busca comprender qué factores o var
 
 R: predictiva.- Se escoge ello, ya que se centra en si es posible predecir valores futuros o desconocidos basados en el análisis de datos históricos. Lo solicitado Implica el desarrollo y la evaluación de los datos a tener.
 
-## Pregunta 2:
+### Pregunta 2:
 
 Considera el siguiente escenario: Sabemos que un usuario de nuestra red empresarial ha estado usando esta para fines no relacionados con el trabajo, como por ejemplo tener un servicio web no autorizado abierto a la red (otros usuarios tienen servicios web activados y autorizados). No queremos tener que rastrear los puertos de cada PC, y sabemos que la actividad puede haber cesado. Pero podemos acceder a los registros de conexiones TCP de cada máquina de cada trabajador (hacia donde abre conexión un PC concreto). Sabemos que nuestros clientes se conectan desde lugares remotos de forma legítima, como parte de nuestro negocio, y que un trabajador puede haber habilitado temporalmente servicios de prueba. Nuestro objetivo es reducir lo posible la lista de posibles culpables, con tal de explicarles que por favor no expongan nuestros sistemas sin permiso de los operadores o la dirección.
 
@@ -55,9 +63,9 @@ B2)Pasos para Obtener los Datos:
 
 \- Recopilar los registros de conexiones TCP desde los firewalls, routers y servidores de la red.
 
- - Obtener logs de aplicaciones de seguridad que monitoricen el tráfico de red.
+-   Obtener logs de aplicaciones de seguridad que monitoricen el tráfico de red.
 
- - Recabar listas de servicios y puertos autorizados desde el departamento de IT.
+-   Recabar listas de servicios y puertos autorizados desde el departamento de IT.
 
 c). Explorar los Datos
 
@@ -65,9 +73,9 @@ c1)Tratamiento de los Datos:
 
 \- Limpiar los datos eliminando entradas duplicadas y registros corruptos.
 
- - Estandarizar formatos de tiempo y direcciones IP.
+-   Estandarizar formatos de tiempo y direcciones IP.
 
- - Enriquecer los datos con información geográfica de las IPs para identificar conexiones remotas legítimas.
+-   Enriquecer los datos con información geográfica de las IPs para identificar conexiones remotas legítimas.
 
 c2). Exploración Inicial:
 
@@ -77,9 +85,9 @@ c2). Exploración Inicial:
 
 c3)Preguntas Específicas:
 
- - ¿Qué usuarios han accedido a puertos o servicios web no autorizados?
+-   ¿Qué usuarios han accedido a puertos o servicios web no autorizados?
 
- - ¿Existen patrones de conexiones fuera del horario laboral habitual?
+-   ¿Existen patrones de conexiones fuera del horario laboral habitual?
 
 \- ¿Hay conexiones repetitivas a ciertos puertos que no están en la lista de servicios autorizados?
 
@@ -97,7 +105,7 @@ D2)Evaluación:
 
 \- Validar los modelos con datos históricos y conocidos de actividades autorizadas e inusuales.
 
- - Realizar pruebas de sensibilidad y precisión para ajustar los modelos y reducir falsos positivos.
+-   Realizar pruebas de sensibilidad y precisión para ajustar los modelos y reducir falsos positivos.
 
 E). Comunicar y Visualizar el Resultado
 
@@ -115,9 +123,9 @@ Comunicación:
 
 \- Preparar un informe detallado con hallazgos clave, respaldado por gráficos y visualizaciones claras.
 
- - Crear un dashboard interactivo para que los operadores puedan explorar los datos y resultados.
+-   Crear un dashboard interactivo para que los operadores puedan explorar los datos y resultados.
 
- - Realizar una presentación a la dirección, explicando los riesgos y proponiendo medidas preventivas, como la implementación de alertas automáticas para conexiones sospechosas.
+-   Realizar una presentación a la dirección, explicando los riesgos y proponiendo medidas preventivas, como la implementación de alertas automáticas para conexiones sospechosas.
 
 Ejemplo de Informe y Visualización
 
@@ -133,24 +141,32 @@ Informe:
 
 Visualizaciones:
 
- - Gráfico de Barras: "Número de Conexiones a Puertos No Autorizados por Usuario."
+-   Gráfico de Barras: "Número de Conexiones a Puertos No Autorizados por Usuario."
 
 \- Mapa Geográfico: "Ubicaciones de Conexiones Remotas."
 
- - Gráfico de Líneas: "Actividad de Red por Hora del Día."
+-   Gráfico de Líneas: "Actividad de Red por Hora del Día."
 
 Estas herramientas y visualizaciones ayudarán a la dirección a entender el alcance del problema y tomar decisiones informadas para proteger la red empresarial.
 
-```{r cars}
-summary(cars)
+Se cambian los nombres de las cabaceras:
+
+
+Se hizo la modificacion de los datos null
+
+
+## Introduccion a R
+
+### Pregunta 1
+
+```{r carga_datos, echo=FALSE}
+epa_http <- read_table("C:/Users/carlosac12/e/epa-http.csv",col_names = FALSE)
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r ver_datos}
+epa_http
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
