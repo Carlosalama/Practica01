@@ -1,0 +1,156 @@
+---
+title: "Practica 1"
+author: "Christian David Meza Gonzàlez"
+date: "2024-05-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# **Pràctica 1**
+
+## Pregunta 1:
+
+De las siguientes preguntas, clasifica cada una como descriptiva, exploratoria, inferencia, predictiva o causal, y razona brevemente (una frase) el porqué:
+
+### 1. Dado un registro de vehículos que circulan por una autopista, disponemos de su marca y modelo, país de matriculación, y tipo de vehículo (por número de ruedas). Con tal de ajustar precios de los peajes, ¿Cuántos vehículos tenemos por tipo? ¿Cuál es el tipo más frecuente? ¿De qué países tenemos más vehículos?
+
+R: exploratoria.- Esto se debe a que la naturaleza de los datos solicitados buscan comprender las relaciones y patrones que existen dentro del conjunto de datos. Se incluyen preguntas sobre correlaciones, asociaciones o agrupaciones de datos.
+
+### 2. Dado un registro de visualizaciones de un servicio de video-on-demand, donde disponemos de los datos del usuario, de la película seleccionada, fecha de visualización y categoría de la película, queremos saber ¿Hay alguna preferencia en cuanto a género literario según los usuarios y su rango de edad?
+
+R: descriptiva.- Se elige ello, debido a que los datos solicitados buscan comprender las relaciones y patrones que existen dentro del conjunto de datos. Se incluiyen preguntas sobre correlaciones, asociaciones o agrupaciones de datos.
+
+### 3. Dado un registro de peticiones a un sitio web, vemos que las peticiones que provienen de una red de telefonía concreta acostumbran a ser incorrectas y provocarnos errores de servicio. ¿Podemos determinar si en el futuro, los próximos mensajes de esa red seguirán dando problemas? ¿Hemos notado el mismo efecto en otras redes de telefonía?
+
+R: causales.- Es asì, ya que lo solicitado busca comprender qué factores o variables causales están influenciando el comportamiento observado en los datos. Implican la identificación de relaciones de causa y efecto; sobre todo con la consulta final.
+
+### 4. Dado los registros de usuarios de un servicio de compras por internet, los usuarios pueden agruparse por preferencias de productos comprados. Queremos saber si ¿Es posible que, dado un usuario al azar y según su historial, pueda ser directamente asignado a un o diversos grupos?
+
+R: predictiva.- Se escoge ello, ya que se centra en si es posible predecir valores futuros o desconocidos basados en el análisis de datos históricos. Lo solicitado Implica el desarrollo y la evaluación de los datos a tener.
+
+## Pregunta 2:
+
+Considera el siguiente escenario: Sabemos que un usuario de nuestra red empresarial ha estado usando esta para fines no relacionados con el trabajo, como por ejemplo tener un servicio web no autorizado abierto a la red (otros usuarios tienen servicios web activados y autorizados). No queremos tener que rastrear los puertos de cada PC, y sabemos que la actividad puede haber cesado. Pero podemos acceder a los registros de conexiones TCP de cada máquina de cada trabajador (hacia donde abre conexión un PC concreto). Sabemos que nuestros clientes se conectan desde lugares remotos de forma legítima, como parte de nuestro negocio, y que un trabajador puede haber habilitado temporalmente servicios de prueba. Nuestro objetivo es reducir lo posible la lista de posibles culpables, con tal de explicarles que por favor no expongan nuestros sistemas sin permiso de los operadores o la dirección.
+
+### Explica con detalle cómo se podría proceder al análisis y resolución del problema mediante Data Science, indicando de donde se obtendrían los datos, qué tratamiento deberían recibir, qué preguntas hacerse para resolver el problema, qué datos y gráficos se obtendrían, y cómo se comunicarían estos.
+
+R:Para abordar el problema de identificar a los usuarios que han estado utilizando la red empresarial para fines no autorizados, como la apertura de servicios web no autorizados, podemos seguir un enfoque basado en Data Science. Aquí se detalla un plan de acción según el esquema enseñado en clase:
+
+a). Pregunta de Interés ¿Cuáles usuarios han utilizado la red empresarial para fines no relacionados con el trabajo, específicamente abriendo servicios web no autorizados?
+
+b). Obtener los Datos
+
+b1)Fuente de Datos:
+
+\- Registros de conexiones TCP de cada máquina de los trabajadores.
+
+\- Información de las conexiones legítimas y autorizadas (lugares remotos de clientes, servicios web autorizados, etc.).
+
+\- Listado de servicios web autorizados y sus respectivas configuraciones de puertos.
+
+B2)Pasos para Obtener los Datos:
+
+\- Recopilar los registros de conexiones TCP desde los firewalls, routers y servidores de la red.
+
+ - Obtener logs de aplicaciones de seguridad que monitoricen el tráfico de red.
+
+ - Recabar listas de servicios y puertos autorizados desde el departamento de IT.
+
+c). Explorar los Datos
+
+c1)Tratamiento de los Datos:
+
+\- Limpiar los datos eliminando entradas duplicadas y registros corruptos.
+
+ - Estandarizar formatos de tiempo y direcciones IP.
+
+ - Enriquecer los datos con información geográfica de las IPs para identificar conexiones remotas legítimas.
+
+c2). Exploración Inicial:
+
+\- Realizar un análisis descriptivo de los datos, como el número de conexiones por usuario, tipos de servicios web accesados, puertos utilizados, etc.
+
+\- Identificar patrones normales de uso de la red y compararlos con posibles actividades sospechosas.
+
+c3)Preguntas Específicas:
+
+ - ¿Qué usuarios han accedido a puertos o servicios web no autorizados?
+
+ - ¿Existen patrones de conexiones fuera del horario laboral habitual?
+
+\- ¿Hay conexiones repetitivas a ciertos puertos que no están en la lista de servicios autorizados?
+
+D). Modelar los Datos
+
+D1)Métodos de Modelado:
+
+\- Análisis de Anomalías: Usar algoritmos de detección de anomalías (e.g., Isolation Forest, Local Outlier Factor) para identificar comportamientos fuera de lo común.
+
+\- Clustering: Aplicar clustering (e.g., K-means) para agrupar comportamientos similares y detectar usuarios con patrones de conexión atípicos.
+
+\- Reglas de Asociación: Generar reglas para identificar combinaciones de puertos y direcciones IP no autorizadas.
+
+D2)Evaluación:
+
+\- Validar los modelos con datos históricos y conocidos de actividades autorizadas e inusuales.
+
+ - Realizar pruebas de sensibilidad y precisión para ajustar los modelos y reducir falsos positivos.
+
+E). Comunicar y Visualizar el Resultado
+
+Datos y Gráficos a Obtener:
+
+\- Tablas resumen de usuarios y sus respectivas conexiones a servicios no autorizados.
+
+\- Gráficos de barras que muestren la frecuencia de uso de puertos no autorizados por usuario.
+
+\- Mapas geográficos de conexiones remotas para identificar ubicaciones sospechosas.
+
+\- Gráficos de líneas que muestren patrones de conexión fuera del horario laboral.
+
+Comunicación:
+
+\- Preparar un informe detallado con hallazgos clave, respaldado por gráficos y visualizaciones claras.
+
+ - Crear un dashboard interactivo para que los operadores puedan explorar los datos y resultados.
+
+ - Realizar una presentación a la dirección, explicando los riesgos y proponiendo medidas preventivas, como la implementación de alertas automáticas para conexiones sospechosas.
+
+Ejemplo de Informe y Visualización
+
+Informe:
+
+\- Resumen Ejecutivo: Descripción del problema, metodología utilizada y principales hallazgos.
+
+\- Análisis de Datos: Detalle del proceso de obtención y limpieza de datos, seguido de análisis descriptivo y modelado.
+
+\- Hallazgos Clave: Usuarios identificados con actividad sospechosa, patrones de comportamiento atípicos, y ejemplos de conexiones no autorizadas.
+
+\- Recomendaciones: Sugerencias para mejorar la seguridad de la red, como políticas de monitoreo continuo y educación de los empleados sobre el uso adecuado de los recursos.
+
+Visualizaciones:
+
+ - Gráfico de Barras: "Número de Conexiones a Puertos No Autorizados por Usuario."
+
+\- Mapa Geográfico: "Ubicaciones de Conexiones Remotas."
+
+ - Gráfico de Líneas: "Actividad de Red por Hora del Día."
+
+Estas herramientas y visualizaciones ayudarán a la dirección a entender el alcance del problema y tomar decisiones informadas para proteger la red empresarial.
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
