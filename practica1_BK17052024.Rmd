@@ -159,23 +159,20 @@ Se hizo la modificacion de los datos null
 
 ### Pregunta 1
 
+Se procede a importar el DataSet que es un archivo csv con nombre epa-http.csv de la siguiente ruta "C:/Users/carlosac12/e/epa-http.csv"
+
 ```{r carga_datos, echo=FALSE}
 epa_http <- read_table("C:/Users/carlosac12/e/epa-http.csv",col_names = FALSE)
 ```
 
-
-
-se cambiaron los nombres de las cabeceras
-
+Para un mejor entendimiento de la informaciòn, se procede a cambiar los nombres de las cabeceras del dataSet epa_http a "IPS", "timestamp", "peticion", "URL", "protocolo", "code_respuesta" y "bytes_reply"
 
 ```{r ver_cabeceras}
 names(epa_http) <- c("IPS", "timestamp", "peticion", "URL", "protocolo", "code_respuesta", "bytes_reply")
 epa_http
 ```
 
-se cambiaron cambiaron los null
-
-
+Tras el anàlisis de la informaciòn, se ha encontrado data vacìa y con el signo "-". se renombra y se cambia a null a continuaciòn:
 
 ```{r ver_null}
 epa_http[is.na(epa_http)] <- "null"
@@ -183,34 +180,39 @@ epa_http[epa_http == "-"] <- "null"
 epa_http
 ```
 
-Convertir la columna 'timestamp' a formato de fecha y hora
+Se procede convertir la columna 'timestamp' a formato de fecha y hora:
 ```{r fecha}
 epa_http$timestamp <- as.POSIXct(epa_http$timestamp, format = "[%d:%H:%M:%S]")
 epa_http
 ```
 
 
-#### Cuales son las dimensiones del dataset cargado (número de filas y columnas)
+#### 1.1 Cuales son las dimensiones del dataset cargado (número de filas y columnas)?
 
 el nùmero de regitros es `r dim(epa_http)[1]`
 el nùmero de columnas es `r dim(epa_http)[2]`
 
-#### Valor medio de las columnas Bytes
+#### 1.2 Valor medio de las columnas Bytes
 
 ```{r ver_media}
 bytes_reply_numeric <- as.numeric(epa_http$bytes_reply[epa_http$bytes_reply != "null"])
 media_bytes_reply <- mean(bytes_reply_numeric, na.rm = TRUE)
 ```
-el valor medio es `r media_bytes_reply`
+El valor medio es `r media_bytes_reply`
 
-#### De las diferentes IPs de origen accediendo al servidor, ¿cuantas pertenecen a una IP claramente educativa (que contenga ".edu")?
+### Pregunta 2
+
+De las diferentes IPs de origen accediendo al servidor, ¿cuantas pertenecen a una IP claramente educativa (que contenga ".edu")?
 
 ```{r ver_filtrado}
 conteo_edu <- sum(grepl("\\.edu", epa_http$IPS))
 ```
-el valor medio es `r conteo_edu`
+Las que pertenecen a una IP claramente educativa que contenga ".edu" son `r conteo_edu`
 
-#### De todas las peticiones recibidas por el servidor cual es la hora en la que hay mayor volumen de peticiones HTTP de tipo "GET"?
+### Pregunta 3 
+
+De todas las peticiones recibidas por el servidor cual es la hora en la que hay mayor volumen de peticiones HTTP de tipo "GET"?
+
 ```{r ver_GET}
 GET_rows <- epa_http[grepl("GET", epa_http$peticion), ]
 GET_rows <- GET_rows[!is.na(GET_rows$bytes_reply), ]
@@ -220,7 +222,10 @@ hora_max_bytes_reply <- GET_rows$timestamp[which.max(GET_rows$bytes_reply)]
 ```
 La fecha y hora donde hay mayor volumen de peticiones de tipo GET es `r hora_max_bytes_reply`
 
-#### De las peticiones hechas por instituciones educativas (.edu), ¿Cuantos bytes en total se han transmitido, en peticiones de descarga de ficheros de texto ".txt"?
+### Pregunta 4
+
+De las peticiones hechas por instituciones educativas (.edu), ¿Cuantos bytes en total se han transmitido, en peticiones de descarga de ficheros de texto ".txt"?
+
 ```{r ver_texto}
 filas_filtradas <- epa_http[grepl("\\.edu", epa_http$IPS) & 
                              grepl("\\.txt", epa_http$URL) & 
@@ -231,20 +236,39 @@ filas_filtradas <- epa_http[grepl("\\.edu", epa_http$IPS) &
                              !is.na(epa_http$bytes_reply), ]
 suma_bytes_reply <- sum(epa_http$bytes_reply, na.rm = TRUE)
 ```
-se han transmitido segun las condiciones indicadas en la premisa `r suma_bytes_reply`
+Se han transmitido segùn las condiciones indicadas en la premisa son `r suma_bytes_reply`
 
-#### Si separamos la petición en 3 partes (Tipo, URL, Protocolo), usando str_split y el separador " " (espacio), ¿cuantas peticiones buscan directamente la URL = "/"?
+### Pregunta 5 
+
+Si separamos la petición en 3 partes (Tipo, URL, Protocolo), usando str_split y el separador " " (espacio), ¿cuantas peticiones buscan directamente la URL = "/"?
+
+- Actualmente ya tenemos dividio el campo peticiòn en 3 partes con nombre de columna peticion, URL y protocolo, se procede a cambiar el nombre de peticion a Tipo a continuaciòn:
+
+```{r cambio_nombre_cabecera}
+names(epa_http)[names(epa_http) == "peticion"] <- "Tipo"
+epa_http
+```
+
+Se procede con el càlculo del total de peticiones segùn la pregunta:
+
 ```{r ver_url}
-bytes_reply_numeric <- as.numeric(epa_http$bytes_reply[epa_http$bytes_reply != "null"])
-media_bytes_reply <- mean(bytes_reply_numeric, na.rm = TRUE)
-```
-el valor medio es `r media_bytes_reply`
+total_peticiones <- sum(epa_http$URL == "/")
 
-#### Aprovechando que hemos separado la petición en 3 partes (Tipo, URL, Protocolo)¿Cuantas peticiones NO tienen como protocolo "HTTP/0.2"?
-```{r ver_http}
-bytes_reply_numeric <- as.numeric(epa_http$bytes_reply[epa_http$bytes_reply != "null"])
-media_bytes_reply <- mean(bytes_reply_numeric, na.rm = TRUE)
 ```
-el valor medio es `r media_bytes_reply`
+
+Las petciones que buscan directamente la URL = "/" son  `r total_peticiones`
+
+### Pregunta 6
+
+Aprovechando que hemos separado la petición en 3 partes (Tipo, URL, Protocolo)¿Cuantas peticiones NO tienen como protocolo "HTTP/0.2"?
+
+```{r ver_http}
+cantidad_peticiones_no_HTTP_0_2 <-sum(epa_http$protocolo != "HTTP/0.2")
+
+```
+Las peticiones NO tienen como protocolo "HTTP/0.2" son `r cantidad_peticiones_no_HTTP_0_2`
+
+
+
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
